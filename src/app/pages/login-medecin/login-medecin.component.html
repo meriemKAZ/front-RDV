@@ -1,7 +1,11 @@
 <div class="page-container">
-  <div class="form-card">
-    <h2>{{ isLoginMode ? 'Connexion Médecin' : 'Inscription Médecin' }}</h2>
 
+  <div class="form-card">
+    <button class="btn-rollback-left" (click)="goHome()" title="Retour">
+      <i class="fas fa-sign-out"></i>
+    </button>
+  
+    <h2>{{ isLoginMode ? 'Connexion Médecin' : 'Inscription Médecin' }}</h2>
     <form [formGroup]="authForm" (ngSubmit)="onSubmit()">
       
       <!-- Nom (inscription uniquement) -->
@@ -12,13 +16,31 @@
           <small *ngIf="f['nom'].errors?.['required']">Nom requis</small>
         </div>
       </div>
-
+  
+      
       <!-- Prénom (inscription uniquement) -->
       <div class="form-group" *ngIf="!isLoginMode">
         <label>Prénom</label>
         <input formControlName="prenom" type="text" />
         <div class="error" *ngIf="f['prenom'].touched && f['prenom'].invalid">
           <small *ngIf="f['prenom'].errors?.['required']">Prénom requis</small>
+        </div>
+      </div>
+
+      <!-- Spécialité (inscription uniquement) -->
+      <div class="form-group" *ngIf="!isLoginMode">
+        <label>Spécialité</label>
+        <select formControlName="specialite">
+          <option value="Généraliste">Généraliste</option>
+          <option value="Cardiologue">Cardiologue</option>
+          <option value="Dermatologue">Dermatologue</option>
+          <option value="Pédiatre">Pédiatre</option>
+          <option value="Ophtalmologue">Ophtalmologue</option>
+          <option value="Psychiatre">Psychiatre</option>
+          <option value="Gynécologue">Gynécologue</option>
+        </select>
+        <div class="error" *ngIf="f['specialite'].touched && f['specialite'].invalid">
+          <small *ngIf="f['specialite'].errors?.['required']">Spécialité requise</small>
         </div>
       </div>
 

@@ -1,0 +1,59 @@
+<div class="calendar-wrapper">
+    <!-- Bouton de retour en haut à droite -->
+    <button class="btn-rollback-top-right" (click)="goHome()" title="Retour">
+        <i class="fas fa-sign-out"></i>
+    </button>
+  
+    <!-- Colonne gauche : Calendrier -->
+    <div class="calendar-left">
+      <div class="calendar-header">
+        <button (click)="prevMonth()">‹</button>
+        <span>{{ viewDate | date: 'MMMM yyyy' }}</span>
+        <button (click)="nextMonth()">›</button>
+      </div>
+      <div class="calendar-days">
+        <div class="day-name" *ngFor="let d of days">{{ d }}</div>
+        <div
+          class="day-cell"
+          *ngFor="let day of daysInMonth"
+          [class.today]="isToday(day)"
+          [class.selected]="isSelected(day)"
+          [class.has-rdv]="hasRdv(day)"
+          (click)="selectDate(day)">
+          {{ day ? day.getDate() : '' }}
+        </div>
+      </div>
+    </div>
+  
+    <!-- Colonne droite : Liste des RDV -->
+    <div class="calendar-right">
+      <h3>Rendez-vous du {{ selectedDate | date:'fullDate' }}</h3>
+  
+      <div *ngIf="filteredRdvList.length === 0" class="no-rdv">Aucun rendez-vous.</div>
+  
+      <table class="rdv-table" *ngIf="filteredRdvList.length > 0">
+        <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Heure</th>
+            <th>Message</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr 
+            *ngFor="let rdv of filteredRdvList"
+            [class.rdv-confirme]="rdv.statut === 'confirmé'">
+            <td>{{ rdv.client.nom }}</td>
+            <td>{{ rdv.date | date:'shortTime' }}</td>
+            <td>{{ rdv.message }}</td>
+            <td>
+              <button class="confirm" (click)="confirmerRdv(rdv._id)" [disabled]="rdv.statut === 'confirmé'">✅</button>
+              <button *ngIf="rdv.statut !== 'confirmé'" class="cancel" (click)="annulerRdv(rdv._id)">❌</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  

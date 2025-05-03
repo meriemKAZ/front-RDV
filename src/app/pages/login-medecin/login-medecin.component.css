@@ -77,4 +77,18 @@
     font-weight: bold;
     margin-top: 4px;
   }
+  .btn-rollback-left {
+    background-color: transparent !important;
+    border: none;
+    font-size: 22px;
+    margin-left: 185px;
+    cursor: pointer;
+    color: #666;
+    transition: color 0.2s;
+  }
+  
+  .btn-rollback:hover {
+    color: #007bff;
+  }
+  
   

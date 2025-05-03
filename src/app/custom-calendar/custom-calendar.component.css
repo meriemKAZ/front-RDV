@@ -1,0 +1,540 @@
+.calendar-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 1rem;
+    background: #f0f9f9;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+  }
+  
+  .calendar-main-title {
+    text-align: center;
+    font-size: 2rem;
+    color: #00695c;
+    margin-bottom: 1rem;
+  }
+  
+  .calendar-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  
+  .calendar-nav button {
+    background: #b2dfdb;
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    font-size: 1.5rem;
+    color: #004d40;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .calendar-nav button:hover {
+    background: #80cbc4;
+  }
+  
+  .month-year {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #004d40;
+  }
+  
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.25rem;
+  }
+  
+  .cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 4rem;
+    border-radius: 8px;
+    background: #ffffff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+  }
+  
+  .cell.header {
+    background: #e0f2f1;
+    font-weight: bold;
+    color: #004d40;
+    cursor: default;
+  }
+  
+  .cell.day:hover {
+    background: #e0f7fa;
+    transform: translateY(-2px);
+  }
+  .cell.empty {
+    background: transparent;
+    cursor: default;
+  }
+  .cell.today {
+    border: 2px solid #00796b;
+  }
+  .cell.selected {
+    background: #00796b;
+    color: #fff;
+  }
+  
+  .popup-backdrop {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 77, 64, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .popup-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 1.5rem;
+    width: 320px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    text-align: center;
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  .popup-card h2 {
+    margin-bottom: 0.75rem;
+    color: #004d40;
+  }
+  
+  .popup-actions {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 1rem;
+  }
+  
+  .popup-actions button {
+    background: #b2dfdb;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .popup-actions button:hover {
+    background: #80cbc4;
+  }
+  .popup-field {
+    display: flex;
+    flex-direction: column;
+    margin: 0 10px;
+    flex: 1;
+  }
+  
+  .popup-field select {
+    width: 100%;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background-color: white;
+    font-size: 14px;
+  }
+  
+  .popup-row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 15px 0;
+    gap: 20px;
+  }
+  .popup-row {
+    display: flex;
+    flex-wrap: wrap;        /* Permet le retour à la ligne */
+    gap: 20px;               /* Espacement entre les éléments */
+  }
+  
+  .popup-field {
+    flex: 1 1 100%;          /* Prend toute la largeur (1 par ligne) */
+    min-width: 200px;
+  }
+  
+  .popup-field label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .popup-field select {
+    width: 100%;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background-color: white;
+  }
+  .main-container {
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+    padding: 20px;
+    align-items: flex-start;
+  }
+  
+  .calendar-container {
+    flex: 1;
+    max-width: 60%;
+    background-color: #f8f8f8;
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+  .rdv-list-container {
+    flex: 1;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+  }
+  
+  .rdv-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .rdv-table th,
+  .rdv-table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .rdv-table button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2em;
+    margin-right: 8px;
+  }
+  .rdv-confirme {
+    background-color: #e6f9e6; /* vert pâle */
+    color: #2e7d32;
+  }
+  
+  .rdv-annule {
+    background-color: #fdecea; /* rouge pâle */
+    color: #c62828;
+  }
+  
+  .rdv-table button {
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 0 4px;
+    transition: transform 0.1s ease;
+  }
+  
+  .rdv-table button:hover {
+    transform: scale(1.1);
+  }
+  .cell.disabled {
+    background-color: #eee;
+    color: #aaa;
+    pointer-events: none;
+    cursor: not-allowed;
+  }
+  .rdv-confirme {
+    background-color: #d4edda; /* Vert clair */
+    color: #155724;            /* Vert foncé */
+    font-weight: 500;
+  }
+  
+  .rdv-annule {
+    background-color: #f8d7da; /* Rouge clair */
+    color: #721c24;            /* Rouge foncé */
+    font-weight: 500;
+  }
+  /* Layout général */
+.main-container {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    padding: 30px;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f9f9f9;
+  }
+  
+  /* Colonne calendrier */
+  .calendar-left {
+    flex: 1;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+    padding: 20px;
+  }
+  
+  /* Titre */
+  .calendar-main-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  /* Navigation mois */
+  .calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  
+  .calendar-header button {
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s;
+  }
+  .calendar-header button:hover {
+    background: #0056b3;
+  }
+  
+  /* Grille des jours */
+  .calendar-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+  }
+  
+  .day-name {
+    text-align: center;
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 8px;
+  }
+  
+  .day-cell {
+    height: 50px;
+    border-radius: 10px;
+    background-color: #f1f1f1;
+    text-align: center;
+    line-height: 50px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  
+  .day-cell.today {
+    background-color: #cce5ff;
+    font-weight: bold;
+    border: 2px solid #007bff;
+  }
+  
+  .day-cell.selected {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+  }
+  
+  .day-cell.has-rdv {
+    background-color: #ffe8a1;
+  }
+  
+  /* Liste des RDV */
+  .calendar-right {
+    flex: 1;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+    padding: 20px;
+  }
+  
+  .search-input {
+    width: 100%;
+    padding: 8px;
+    margin: 12px 0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+  }
+  
+  .rdv-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  
+  .rdv-table th, .rdv-table td {
+    border-bottom: 1px solid #eaeaea;
+    padding: 12px;
+    text-align: left;
+  }
+  
+  .rdv-table th {
+    background-color: #f3f3f3;
+    color: #333;
+  }
+  
+  .rdv-table tr:hover {
+    background-color: #f9f9f9;
+  }
+  
+  .rdv-confirme {
+    background-color: #d4edda;
+  }
+  
+  .rdv-annule {
+    background-color: #f8d7da;
+  }
+  
+  /* Boutons actions */
+  button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.3s ease;
+  }
+  
+  button.confirm {
+    background-color: #28a745;
+    color: white;
+  }
+  button.cancel {
+    background-color: #dc3545;
+    color: white;
+  }
+  button:hover {
+    opacity: 0.85;
+  }
+  
+  /* Popups */
+  .popup-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+  }
+  
+  .popup-card {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    width: 500px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+  }
+  
+  .popup-row {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 15px;
+  }
+  
+  .popup-field label {
+    font-weight: 600;
+    margin-bottom: 4px;
+    display: block;
+  }
+  
+  .popup-field select,
+  .popup-field input,
+  .popup-field textarea {
+    width: 100%;
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+  }
+  
+  .popup-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  .calendar-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+    margin-top: 1rem;
+  }
+  
+  .day-name {
+    text-align: center;
+    font-weight: bold;
+    color: #888;
+    padding: 6px 0;
+  }
+  
+  .day-cell {
+    height: 60px;
+    text-align: center;
+    line-height: 60px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: 0.2s ease;
+  }
+  
+  .day-cell:hover {
+    background-color: #f0f8ff;
+  }
+  
+  .day-cell.today {
+    border: 2px solid #4caf50;
+  }
+  
+  .day-cell.selected {
+    background-color: #4caf50;
+    color: white;
+  }
+  
+  .day-cell.empty {
+    background-color: transparent;
+    box-shadow: none;
+    cursor: default;
+  }
+  
+  .day-cell.weekend {
+    background-color: #eee;
+    color: #aaa;
+    pointer-events: none;
+    cursor: not-allowed;
+  }
+  .rdv-confirme-day {
+    background-color: #c8f7c5; /* Vert clair */
+    border: 1px solid #2ecc71;
+    color: #2e7d32;
+    font-weight: bold;
+  }
+  .calendar-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    padding: 2rem;
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  .btn-rollback-top-right {
+    position: absolute;
+    top: 15px;
+    right: -2px;
+    background: transparent;
+    border: none;
+    font-size: 22px;
+    color: #444;
+    cursor: pointer;
+    transition: color 0.3s;
+    z-index: 1000;
+  }
+  
+  .btn-rollback-top-right:hover {
+    color: #007bff;
+  }
+  

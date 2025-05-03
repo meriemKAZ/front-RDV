@@ -41,7 +41,9 @@ export class LoginClientComponent implements OnInit {
       this.authForm.addControl('confirmPassword', this.fb.control('', [Validators.required, Validators.minLength(6)]));
     }
   }
-
+  goHome() {
+    this.router.navigate(['/home']);
+  }
   toggleMode() {
     this.isLoginMode = !this.isLoginMode;
     this.submitted = false;
@@ -77,7 +79,11 @@ export class LoginClientComponent implements OnInit {
       this.authService.login({ email: formValue.email, motDePasse: formValue.password }).subscribe({
         next: (res) => {
           console.log('Connexion réussie', res);
-          this.router.navigate(['/calendrier']);
+          localStorage.setItem('tokenClient', res?.token); // <-- token stocké
+          localStorage.setItem('role', res?.user?.role); // <-- token stocké
+          localStorage.setItem('user', JSON.stringify(res?.user));
+
+          this.router.navigate(['/calendrierClient']);
         },
         error: (err) => {
           const msg = err?.error?.message || 'Erreur de connexion';

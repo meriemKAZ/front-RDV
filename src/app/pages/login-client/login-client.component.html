@@ -1,5 +1,9 @@
 <div class="page-container">
   <div class="form-card">
+    <button class="btn-rollback-left" (click)="goHome()" title="Retour">
+      <i class="fas fa-sign-out"></i>
+    </button>
+  
     <h2>{{ isLoginMode ? 'Connexion Patient' : 'Inscription Patient' }}</h2>
 
     <form [formGroup]="authForm" (ngSubmit)="onSubmit()">

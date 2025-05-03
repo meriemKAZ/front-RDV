@@ -16,9 +16,9 @@ export class MesRendezvousComponent {
   ) {}
 
   ngOnInit(): void {
-    this.authService.getMesRendezVous().subscribe(s => {
-      this.rendezvousList = s;
-    });
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+
+   
   }
 
   hasRendezVous(date: string): boolean {

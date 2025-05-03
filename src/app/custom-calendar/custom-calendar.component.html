@@ -1,0 +1,159 @@
+<div class="main-container calendar-wrapper">
+    <button class="btn-rollback-top-right" (click)="goHome()" title="Retour">
+        <i class="fas fa-sign-out"></i>
+    </button>
+    <!-- Partie gauche : Calendrier moderne -->
+    <div class="calendar-left">
+      <h1 class="calendar-main-title">Prise de RDV</h1>
+  
+      <div class="calendar-header">
+        <button (click)="prevMonth()">‹</button>
+        <span>{{ viewDate | date: 'MMMM yyyy' }}</span>
+        <button (click)="nextMonth()">›</button>
+      </div>
+  
+      <div class="calendar-days">
+        <div class="day-name" *ngFor="let d of ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam']">
+          {{ d }}
+        </div>
+      
+        <div class="day-cell"
+        *ngFor="let day of daysInMonth"
+        [class.today]="isToday(day)"
+        [class.selected]="isSelected(day)"
+        [class.empty]="!day"
+        [class.weekend]="day?.getDay() === 0 || day?.getDay() === 6"
+        [class.rdv-confirme-day]="day && hasConfirmedRdv(day)"
+        (click)="handleDayClick(day)">
+     {{ day?.getDate() }}
+   </div>
+   
+      </div>
+      
+  
+      <!-- Pop-up de confirmation -->
+      <div class="popup-backdrop" *ngIf="popupVisible">
+        <div class="popup-card">
+          <h2>Rendez-vous le {{ selectedDate | date:'fullDate' }}</h2>
+  
+          <div class="popup-row">
+            <div class="popup-field">
+              <label for="specialite">Spécialité :</label>
+              <select id="specialite" [(ngModel)]="selectedSpecialite" (change)="fetchMedecins()">
+                <option *ngFor="let spec of specialites" [value]="spec">{{ spec }}</option>
+              </select>
+            </div>
+  
+            <div class="popup-field">
+              <label for="medecin">Médecin :</label>
+              <select id="medecin" #medSelect>
+                <option *ngFor="let m of medecinsFiltres" [value]="m._id">{{ m.nom }}</option>
+              </select>
+            </div>
+  
+            <div class="popup-field">
+              <label for="heure">Heure :</label>
+              <select [(ngModel)]="heure" required>
+                <option *ngFor="let h of heuresDisponibles" [value]="h">{{ h }}</option>
+              </select>
+              
+              </div>
+  
+            <div class="popup-field">
+              <label for="message">Message :</label>
+              <textarea id="message" [(ngModel)]="message" placeholder="Votre message..."></textarea>
+            </div>
+          </div>
+  
+          <div class="popup-actions">
+            <button (click)="confirmRdv(medSelect.value)">Valider</button>
+            <button (click)="closePopup()">Annuler</button>
+          </div>
+        </div>
+      </div>
+  <!-- Pop-up d'information simple -->
+<div class="popup-backdrop" *ngIf="infoPopupVisible">
+    <div class="popup-card">
+      <p>{{ infoMessage }}</p>
+      <div class="popup-actions">
+        <button (click)="infoPopupVisible = false">Fermer</button>
+      </div>
+    </div>
+  </div>
+  
+      <!-- Pop-up de modification -->
+      <div class="popup-backdrop" *ngIf="editPopupVisible">
+        <div class="popup-card">
+          <h2>Modifier le rendez-vous</h2>
+  
+          <div class="popup-row">
+            <div class="popup-field">
+              <label for="edit-date">Nouvelle date :</label>
+              <input
+                id="edit-date"
+                type="datetime-local"
+                [(ngModel)]="editRdvData.date"
+                (change)="verifierHeure(editRdvData.date)"
+              />
+            </div>
+          
+            <div class="popup-field">
+              <label for="edit-message">Message :</label>
+              <textarea id="edit-message" [(ngModel)]="editRdvData.message" placeholder="Modifier le message..."></textarea>
+            </div>
+          </div>
+          
+  
+          <div class="popup-actions">
+            <button  [disabled]="!heureValide"  (click)="submitEditRdv()">Enregistrer</button>
+            <button (click)="editPopupVisible = false">Annuler</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Partie droite : Liste des rendez-vous -->
+    <div class="calendar-right">
+      <h2>Mes Rendez-vous du {{ selectedDate | date:'fullDate' }}</h2>
+  
+      <div *ngIf="rendezvousList.length === 0">Aucun rendez-vous pour le moment.</div>
+  
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        placeholder="Rechercher par date, statut ou message..."
+        class="search-input"
+      />
+  
+      <table class="rdv-table" *ngIf="rendezvousList.length > 0">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Statut</th>
+            <th>Message</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+            <tr 
+              *ngFor="let rdv of rendezvousList | filterRdv:searchTerm | orderByDate:'date'" 
+              [class.rdv-confirme]="rdv.statut === 'confirmé'"
+              [class.rdv-annule]="rdv.statut === 'annulé'">
+          
+              <td>{{ rdv.date | date:'dd/MM/yyyy HH:mm' }}</td>
+              <td>{{ rdv.statut || 'En attente' }}</td>
+              <td>{{ rdv.message || '-' }}</td>
+              <td>
+                <!-- Bouton modifier uniquement si le rdv n'est NI confirmé NI annulé -->
+                <button *ngIf="rdv.statut !== 'confirmé' && rdv.statut !== 'annulé'" (click)="editRdv(rdv)" title="Modifier">✏️</button>
+          
+                <!-- Bouton supprimer toujours affiché -->
+                <button (click)="deleteRdv(rdv._id)" title="Supprimer">🗑️</button>
+              </td>
+            </tr>
+          </tbody>
+          
+      </table>
+    </div>
+  </div>
+  
